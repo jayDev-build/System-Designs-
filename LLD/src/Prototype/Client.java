@@ -11,8 +11,12 @@ public class Client {
 
         Vehicle carClone = car.clone();
 
-        System.out.println("Make: " + carClone.getMake());
-        System.out.println("Model: " + carClone.getModel());
-        System.out.println("licensePlace: " + carClone.getLicensePlate());
+        System.out.println("clone Make: " + carClone.getMake());
+        System.out.println("clone Model: " + carClone.getModel());
+        System.out.println("clone licensePlace: " + carClone.getLicensePlate());
+
+        carClone.setLicensePlate("AB3456");
+        System.out.println("\nUpdated licensePlace for clone: " + carClone.getLicensePlate());
+        System.out.println("\noriginal licensePlace for clone: " + car.getLicensePlate());
     }
 }

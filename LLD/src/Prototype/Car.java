@@ -1,14 +1,26 @@
 package Prototype;
 
 public class Car implements Vehicle{
-    public String make;
-    public String model;
-    public String licensePlate;
+    private String make;
+    private String model;
+    private String licensePlate;
 
     private Car(Builder build){
         this.make = build.make;
         this.model = build.model;
         this.licensePlate = build.licensePlate;
+    }
+
+    public void setMake(String make){
+        this.make = make;
+    }
+
+    public void setModel(String model){
+        this.model = model;
+    }
+
+    public void setLicensePlate(String licensePlate){
+        this.licensePlate = licensePlate;
     }
 
     static class Builder {

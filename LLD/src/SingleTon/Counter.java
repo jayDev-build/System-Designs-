@@ -7,8 +7,12 @@ public class Counter {
     private Counter(){}
 
     public static Counter getInstance(){
-        if(instance == null){
-            instance =  new Counter();
+        if(instance == null) {
+            synchronized (Counter.class) {
+                if (instance == null) {
+                    instance = new Counter();
+                }
+            }
         }
         return instance;
     }

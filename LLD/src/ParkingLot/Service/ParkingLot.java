@@ -4,10 +4,10 @@ import ParkingLot.Enums.PaymentType;
 import ParkingLot.Enums.PricingStrategyType;
 import ParkingLot.Factory.PaymentFactory;
 import ParkingLot.Factory.PricingStrategyFactory;
-import ParkingLot.Models.ParkingFloor;
-import ParkingLot.Models.ParkingSpot;
+import ParkingLot.Models.Parking.ParkingFloor;
+import ParkingLot.Models.Parking.ParkingSpot;
 import ParkingLot.Models.Ticket;
-import ParkingLot.Models.Vehicle;
+import ParkingLot.Models.Vehicle.Vehicle;
 import ParkingLot.Strategy.Payment.PaymentStrategy;
 import ParkingLot.Strategy.Pricing.PricingStrategy;
 

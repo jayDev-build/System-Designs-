@@ -1,10 +1,10 @@
 package ParkingLot.Factory;
 
 import ParkingLot.Enums.VehicleType;
-import ParkingLot.Models.Bike;
-import ParkingLot.Models.Car;
-import ParkingLot.Models.Truck;
-import ParkingLot.Models.Vehicle;
+import ParkingLot.Models.Vehicle.Bike;
+import ParkingLot.Models.Vehicle.Car;
+import ParkingLot.Models.Vehicle.Truck;
+import ParkingLot.Models.Vehicle.Vehicle;
 
 public class VehicleFactory {
 

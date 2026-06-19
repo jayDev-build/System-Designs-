@@ -1,4 +1,4 @@
-package ParkingLot.Models;
+package ParkingLot.Models.Parking;
 
 import ParkingLot.Enums.VehicleType;
 

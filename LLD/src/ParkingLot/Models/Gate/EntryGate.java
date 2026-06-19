@@ -3,7 +3,7 @@ package ParkingLot.Models.Gate;
 import ParkingLot.Enums.GateType;
 import ParkingLot.Service.ParkingLot;
 import ParkingLot.Models.Ticket;
-import ParkingLot.Models.Vehicle;
+import ParkingLot.Models.Vehicle.Vehicle;
 
 import java.time.LocalTime;
 

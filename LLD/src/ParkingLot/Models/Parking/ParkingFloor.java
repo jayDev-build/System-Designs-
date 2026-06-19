@@ -1,7 +1,6 @@
-package ParkingLot.Models;
+package ParkingLot.Models.Parking;
 
 import ParkingLot.Enums.VehicleType;
-import ParkingLot.Factory.VehicleFactory;
 
 import java.util.concurrent.ConcurrentHashMap;
 

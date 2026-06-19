@@ -4,11 +4,11 @@ import ParkingLot.Enums.VehicleType;
 import ParkingLot.Factory.VehicleFactory;
 import ParkingLot.Models.Gate.EntryGate;
 import ParkingLot.Models.Gate.ExitGate;
-import ParkingLot.Models.ParkingFloor;
+import ParkingLot.Models.Parking.ParkingFloor;
 import ParkingLot.Service.ParkingLot;
-import ParkingLot.Models.ParkingSpot;
+import ParkingLot.Models.Parking.ParkingSpot;
 
-import ParkingLot.Models.Vehicle;
+import ParkingLot.Models.Vehicle.Vehicle;
 
 import java.time.LocalTime;
 

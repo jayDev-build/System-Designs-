@@ -1,8 +1,7 @@
 package ParkingLot.Models;
 
 import ParkingLot.Enums.PaymentStatus;
-import ParkingLot.Strategy.PaymentStrategy;
-import ParkingLot.Vehicle.Vehicle;
+import ParkingLot.Strategy.Payment.PaymentStrategy;
 
 import java.time.LocalTime;
 

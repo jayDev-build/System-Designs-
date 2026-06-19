@@ -1,9 +1,9 @@
 package ParkingLot.Factory;
 
 import ParkingLot.Enums.PaymentType;
-import ParkingLot.Payment.CardPayment;
-import ParkingLot.Payment.CashPayment;
-import ParkingLot.Strategy.PaymentStrategy;
+import ParkingLot.Strategy.Payment.CardPayment;
+import ParkingLot.Strategy.Payment.CashPayment;
+import ParkingLot.Strategy.Payment.PaymentStrategy;
 
 public class PaymentFactory {
 

@@ -1,16 +1,14 @@
 package ParkingLot;
 
-import ParkingLot.Enums.PaymentType;
 import ParkingLot.Enums.VehicleType;
 import ParkingLot.Factory.VehicleFactory;
-import ParkingLot.Gate.EntryGate;
-import ParkingLot.Gate.ExitGate;
+import ParkingLot.Models.Gate.EntryGate;
+import ParkingLot.Models.Gate.ExitGate;
 import ParkingLot.Models.ParkingFloor;
-import ParkingLot.Models.ParkingLot;
+import ParkingLot.Service.ParkingLot;
 import ParkingLot.Models.ParkingSpot;
-import ParkingLot.Models.Ticket;
 
-import ParkingLot.Vehicle.Vehicle;
+import ParkingLot.Models.Vehicle;
 
 import java.time.LocalTime;
 

@@ -1,9 +1,9 @@
 package ParkingLot.Factory;
 
 import ParkingLot.Enums.GateType;
-import ParkingLot.Gate.EntryGate;
-import ParkingLot.Gate.ExitGate;
-import ParkingLot.Gate.Gate;
+import ParkingLot.Models.Gate.EntryGate;
+import ParkingLot.Models.Gate.ExitGate;
+import ParkingLot.Models.Gate.Gate;
 
 public class GateFactory {
     public Gate createGate(GateType gateType, String id){

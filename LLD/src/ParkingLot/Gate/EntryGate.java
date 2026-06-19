@@ -1,10 +1,12 @@
 package ParkingLot.Gate;
 
 import ParkingLot.Enums.GateType;
+import ParkingLot.Models.ParkingLot;
 import ParkingLot.Models.Ticket;
-import Prototype.Vehicle;
+import ParkingLot.Vehicle.Vehicle;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class EntryGate extends Gate {
 
@@ -17,8 +19,8 @@ public class EntryGate extends Gate {
         return GateType.ENTRY;
     }
 
-    public Ticket parkVehicle(Vehicle vehicle, LocalDateTime entryTime){
-        return new Ticket();
+    public Ticket parkVehicle(Vehicle vehicle, LocalTime entryTime){
+        return ParkingLot.getInstance().parkVehicle(vehicle, entryTime);
     }
 
 

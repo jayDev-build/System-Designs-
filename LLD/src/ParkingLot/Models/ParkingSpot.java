@@ -5,8 +5,8 @@ import ParkingLot.Enums.VehicleType;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ParkingSpot {
-    private String id;
-    private AtomicBoolean occupied = new AtomicBoolean(false);
+    public String id;
+    public AtomicBoolean occupied = new AtomicBoolean(false);
     private VehicleType allowedType;
 
     public ParkingSpot(String id, VehicleType allowedType){
@@ -20,6 +20,10 @@ public class ParkingSpot {
 
     public boolean tryOccupy(){
         return occupied.compareAndExchange(false, true);
+    }
+
+    public boolean isOccupied(){
+        return occupied.get();
     }
 
     public void vacate(){

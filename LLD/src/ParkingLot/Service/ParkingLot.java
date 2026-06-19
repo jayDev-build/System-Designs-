@@ -18,21 +18,26 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ParkingLot {
     private static ParkingLot instance;
 
-    private ParkingLot(){}   //private constructor
 
-    private static ConcurrentHashMap<String, ParkingFloor> floors;
-    private static ConcurrentHashMap<String, Ticket> activeTickets;
+    private ConcurrentHashMap<String, ParkingFloor> floors;
+    private ConcurrentHashMap<String, Ticket> activeTickets;
 
-    private static PricingStrategyFactory pricingStrategyFactory = new PricingStrategyFactory();
-    private static PricingStrategy pricingStrategy = pricingStrategyFactory.get(PricingStrategyType.TIMEBASEPRICING);
+    private PricingStrategyFactory pricingStrategyFactory ;
+    private PricingStrategy pricingStrategy ;
+
+    //private constructor
+    private ParkingLot(){
+        pricingStrategyFactory = new PricingStrategyFactory();
+        pricingStrategy = pricingStrategyFactory.get(PricingStrategyType.TIMEBASEPRICING);
+        floors = new ConcurrentHashMap<>();
+        activeTickets = new ConcurrentHashMap<>();
+    }
 
     public static ParkingLot getInstance(){
         if(instance == null){
             synchronized (ParkingLot.class){
                 if(instance == null){
                     instance = new ParkingLot();
-                    floors = new ConcurrentHashMap<>();
-                    activeTickets = new ConcurrentHashMap<>();
                 }
             }
         }

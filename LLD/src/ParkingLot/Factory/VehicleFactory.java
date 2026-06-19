@@ -6,7 +6,7 @@ import ParkingLot.Vehicle.Car;
 import ParkingLot.Vehicle.Truck;
 import ParkingLot.Vehicle.Vehicle;
 
-public abstract class VehicleFactory {
+public class VehicleFactory {
 
     public Vehicle createVehicle(VehicleType vehicleType, String vehicleNumber){
         return switch (vehicleType){

@@ -11,12 +11,13 @@ public class ParkingFloor {
 
     public ParkingFloor(String id){
         this.id = id;
+        spots = new ConcurrentHashMap<>();
     }
 
     public ParkingSpot findAvailableSpot(VehicleType vehicleType){
         for(String spotId : spots.keySet()){
             ParkingSpot spot = spots.get(spotId);
-            if(spot.tryOccupy() && spot.getAllowedType().equals(vehicleType)) return spot;
+            if(!spot.isOccupied() && spot.getAllowedType().equals(vehicleType)) return spot;
         }
 
         return null;
@@ -24,5 +25,9 @@ public class ParkingFloor {
 
     public ParkingSpot getSpot(String id){
         return spots.get(id);
+    }
+
+    public void addParkingSpot(ParkingSpot parkingSpot){
+        spots.put(parkingSpot.id, parkingSpot);
     }
 }

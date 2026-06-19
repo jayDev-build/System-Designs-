@@ -1,6 +1,7 @@
 package ParkingLot.Gate;
 
 import ParkingLot.Enums.GateType;
+import ParkingLot.Enums.PaymentType;
 import ParkingLot.Models.ParkingLot;
 import ParkingLot.Strategy.PaymentStrategy;
 
@@ -19,7 +20,7 @@ public class ExitGate extends Gate {
         return GateType.EXIT;
     }
 
-    public void unParkVehicle(String ticketId, LocalTime exitTime, PaymentStrategy paymentStrategy){
-        ParkingLot.getInstance().unParkVehicle(ticketId, exitTime, paymentStrategy);
+    public void unParkVehicle(String ticketId, LocalTime exitTime, PaymentType paymentType){
+        ParkingLot.getInstance().unParkVehicle(ticketId, exitTime, paymentType);
     }
 }

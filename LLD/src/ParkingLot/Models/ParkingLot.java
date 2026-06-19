@@ -1,6 +1,8 @@
 package ParkingLot.Models;
 
+import ParkingLot.Enums.PaymentType;
 import ParkingLot.Enums.PricingStrategyType;
+import ParkingLot.Factory.PaymentFactory;
 import ParkingLot.Factory.PricingStrategyFactory;
 import ParkingLot.Payment.PaymentProcessor;
 import ParkingLot.Strategy.PaymentStrategy;
@@ -15,33 +17,34 @@ public class ParkingLot {
 
     private ParkingLot(){}   //private constructor
 
-    private ConcurrentHashMap<String, ParkingFloor> floors;
-    private ConcurrentHashMap<String, Ticket> activeTickets;
+    private static ConcurrentHashMap<String, ParkingFloor> floors;
+    private static ConcurrentHashMap<String, Ticket> activeTickets;
 
-    private static final PricingStrategyFactory pricingStrategyFactory = new PricingStrategyFactory();
-    private static final PricingStrategy pricingStrategy = pricingStrategyFactory.get(PricingStrategyType.TIMEBASEPRICING);
+    private static PricingStrategyFactory pricingStrategyFactory = new PricingStrategyFactory();
+    private static PricingStrategy pricingStrategy = pricingStrategyFactory.get(PricingStrategyType.TIMEBASEPRICING);
 
     public static ParkingLot getInstance(){
         if(instance == null){
             synchronized (ParkingLot.class){
                 if(instance == null){
                     instance = new ParkingLot();
+                    floors = new ConcurrentHashMap<>();
+                    activeTickets = new ConcurrentHashMap<>();
                 }
             }
         }
         return instance;
     }
 
-    public void addFloor(String id){
-        ParkingFloor floor = new ParkingFloor(id);
-        floors.put(id, floor);
+    public void addFloor(ParkingFloor parkingFloor){
+        floors.put(parkingFloor.id, parkingFloor);
     }
 
     public Ticket parkVehicle(Vehicle vehicle, LocalTime entryTime){
         ParkingSpot spot;
         for(ParkingFloor floor : floors.values()){
             spot = floor.findAvailableSpot(vehicle.getType());
-            if(spot != null){
+            if(spot != null && spot.tryOccupy()){
                 Ticket ticket = new Ticket();
                 UUID uuid = UUID.randomUUID();
                 ticket.setId(uuid.toString());
@@ -52,7 +55,6 @@ public class ParkingLot {
 
                 activeTickets.put(uuid.toString(), ticket);
                 System.out.println("Vehicle Parked Ticket: " + ticket);
-
                 return ticket;
             }
         }
@@ -61,12 +63,15 @@ public class ParkingLot {
         return null;
     }
 
-    public void unParkVehicle(String ticketId, LocalTime exitTime, PaymentStrategy paymentStrategy){
+    public void unParkVehicle(String ticketId, LocalTime exitTime, PaymentType paymentType){
         Ticket ticket = activeTickets.get(ticketId);
         if(ticket == null){
             throw new  IllegalArgumentException("Invalid Ticket Id");
         }
         Double totalCost = pricingStrategy.calculate(ticket.getVehicle().getType(), ticket.getEntryTime(), exitTime);
+
+        PaymentFactory paymentFactory = new PaymentFactory();
+        PaymentStrategy paymentStrategy = paymentFactory.getPaymentStrategy(paymentType);
 
         PaymentProcessor paymentProcessor = new PaymentProcessor(paymentStrategy);
         boolean paid = paymentProcessor.pay(ticket, totalCost);

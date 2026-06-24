@@ -6,7 +6,7 @@ Welcome to the **System Design and Low-Level Design (LLD)** repository! This rep
 
 ## 📂 Repository Structure
 
-The codebase is organized into two primary sections: classic **Design Patterns** and a production-grade **Parking Lot LLD case study**.
+The codebase is organized into classic **Design Patterns** and multiple production-grade **LLD case studies** (such as a Parking Lot system and a Splitwise expense sharing app).
 
 ```
 System Design/
@@ -26,13 +26,26 @@ System Design/
         │   ├── SingleTon/       # Thread-safe double-checked lock Singleton
         │   └── Strategy/        # Dynamic payment strategy routing
         │
-        └── ParkingLot/          # Concurrency-Aware Parking Lot Case Study
-            ├── Client.java      # Entry point / Concurrent Simulation test-harness
-            ├── Enums/           # VehicleType, PaymentType, PricingStrategyType, etc.
-            ├── Factory/         # Factories for Vehicles, Payments, and Pricing Strategies
-            ├── Models/          # Object-Oriented Domain Entities (Gates, Spots, Tickets, etc.)
-            ├── Service/         # Core Services (ParkingLot manager, PaymentProcessor)
-            └── Strategy/        # Dynamic Spot-Allocation and Parking-Pricing Algorithms
+        ├── ParkingLot/          # Concurrency-Aware Parking Lot Case Study
+        │   ├── Client.java      # Entry point / Concurrent Simulation test-harness
+        │   ├── Enums/           # VehicleType, PaymentType, PricingStrategyType, etc.
+        │   ├── Factory/         # Factories for Vehicles, Payments, and Pricing Strategies
+        │   ├── Models/          # Object-Oriented Domain Entities (Gates, Spots, Tickets, etc.)
+        │   ├── Service/         # Core Services (ParkingLot manager, PaymentProcessor)
+        │   └── Strategy/        # Dynamic Spot-Allocation and Parking-Pricing Algorithms
+        │
+        ├── SnakeAndLadders/     # Snake & Ladders board game implementation
+        │
+        ├── SplitWise/           # Splitwise Expense Sharing System
+        │   ├── Entities/        # Core models (User, Group, Expense, Split, BalanceSheet)
+        │   ├── Enums/           # SplitType (EQUAL, PERCENTAGE)
+        │   ├── Factory/         # SplitStrategyFactory for strategy resolution
+        │   ├── Repository/      # In-memory storage for groups and expenses
+        │   ├── Service/         # Service layer (ExpenseService, GroupService, BalanceSheetService)
+        │   ├── Strategy/        # SplitStrategy implementations (Equal, Percentage)
+        │   └── Main.java        # Splitwise application driver
+        │
+        └── SplitWisePractice2/  # Alternative practice implementation of Splitwise
 ```
 
 ---
@@ -65,6 +78,109 @@ The `ParkingLot` system is a fully realized low-level design case study implemen
 
 ---
 
+## 💸 LLD Case Study: Splitwise (Expense Sharing System)
+
+The `SplitWise` package contains a fully functional Low-Level Design implementation of an expense-sharing application like Splitwise. It models users, groups, and expenses while providing flexible split computations and a transaction-minimization feature.
+
+### Key Features
+1. **Dynamic Expense Splitting**: Supports multiple split strategies (e.g., equal split, percentage-based split) powered by the **Strategy Pattern**.
+2. **Modular Strategy Resolution**: Resolves strategies dynamically via a [SplitStrategyFactory](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Factory/SplitStrategyFactory.java) mapping to [SplitType](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Enums/SplitType.java).
+3. **Automated Balance Sheet Tracking**: Maintains group-wide balance sheets for every member. Adding an expense automatically updates how much each member owes or is owed by the payer.
+4. **Greedy Transaction Simplification**: Implements a transaction-minimization algorithm that reduces the absolute number of payment transfers required to settle all debts in a group.
+
+### Core Architectural Components
+* **Domain Models**:
+  * [User](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Entities/User.java): Represents user details (ID, name).
+  * [Group](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Entities/Group.java): Aggregates users, expenses, and maintains individual [BalanceSheet](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Entities/BalanceSheet.java) records.
+  * [Expense](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Entities/Expense.java) & [Split](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Entities/Split.java): Represents transaction metadata and the individual user shares.
+* **Services**:
+  * [ExpenseService](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Service/ExpenseService.java): Creates expenses, applies strategies, and invokes the balance sheet updates.
+  * [BalanceSheetService](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Service/BalanceSheetService.java): Manages updates to individual user balance sheets and prints statements.
+  * [SimplifiedBalanceSheet](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Service/SimplifiedBalanceSheet.java): Implements transaction settlement/minimization.
+
+#### 📊 System Class Diagram
+```mermaid
+classDiagram
+    class User {
+        +String userId
+        +String name
+    }
+    class Group {
+        +String groupId
+        +String name
+        +List~User~ userList
+        +List~Expense~ expenseList
+        +Map~User, BalanceSheet~ balanceSheets
+        +addMember(User)
+        +addExpense(Expense)
+    }
+    class BalanceSheet {
+        +double amountPaid
+        +double totalExpense
+        +Map~User, Double~ balances
+        +addAmountPaid(double)
+        +addTotalExpense(double)
+        +addBalance(User, double)
+    }
+    class Expense {
+        +double amount
+        +String description
+        +User paidBy
+        +List~Split~ splitList
+    }
+    class Split {
+        +User user
+        +double amount
+    }
+    class SplitStrategy {
+        <<interface>>
+        +split(amount, userList, metaData) List~Split~
+    }
+    class EqualSplitStrategy {
+        +split(amount, userList, metaData) List~Split~
+    }
+    class PercentageSplitStrategy {
+        +split(amount, userList, metaData) List~Split~
+    }
+
+    Group "1" *-- "many" User : contains
+    Group "1" *-- "many" Expense : contains
+    Group "1" *-- "many" BalanceSheet : maps users to
+    Expense "1" *-- "many" Split : splits into
+    Split "1" --> "1" User : assigned to
+    Expense "1" --> "1" User : paid by
+    EqualSplitStrategy ..|> SplitStrategy
+    PercentageSplitStrategy ..|> SplitStrategy
+```
+
+#### 🔄 Expense Flow Architecture
+```mermaid
+flowchart TD
+    A([Add Expense Input]) --> B[ExpenseService]
+    B --> C{SplitStrategyFactory}
+    C -->|EQUAL| D[EqualSplitStrategy]
+    C -->|PERCENTAGE| E[PercentageSplitStrategy]
+    D --> F[Calculate equal shares]
+    E --> F[Calculate percentage shares]
+    F --> G[Generate Split List]
+    G --> H[Create Expense Entity]
+    H --> I[Update Group Balance Sheets]
+    I --> J([Done])
+```
+
+### 🧮 Debt Simplification Algorithm
+The core of the settlement system lies in [SimplifiedBalanceSheet.java](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Service/SimplifiedBalanceSheet.java). It reduces the number of payments using a greedy Priority Queue approach:
+1. **Net Balance Calculation**: First, the total net balance of each user in the group is calculated (Received - Paid).
+2. **Min/Max-Heap Partitioning**:
+   * Users with positive net balances are pushed into a Max-Heap (`creditors`) ordered descending by credit amount.
+   * Users with negative net balances are pushed into a Min-Heap (`debtors`) ordered descending by absolute debt amount.
+3. **Iterative Settlement**:
+   * The largest creditor and the largest debtor are popped.
+   * A settlement is made for `min(creditAmount, absolute(debtAmount))`.
+   * Net balances are updated and outstanding users are pushed back into the heaps until all debts are cleared.
+
+---
+
 ## ⚙️ How to Run
 
 ### Prerequisites
@@ -75,6 +191,11 @@ The `ParkingLot` system is a fully realized low-level design case study implemen
 To run the simulation which demonstrates multi-threaded parking requests:
 1. Navigate to `LLD/src/ParkingLot/`.
 2. Open and run the [Client.java](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/ParkingLot/Client.java) file.
+
+### Running the Splitwise Simulation
+To run the Splitwise simulation:
+1. Navigate to `LLD/src/SplitWise/` or `LLD/src/SplitWisePractice2/`.
+2. Open and run the [Main.java](file:///c:/YASHIT/java_lec/System%20Design/LLD/src/SplitWise/Main.java) file.
 
 ---
 

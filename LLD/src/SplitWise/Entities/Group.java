@@ -43,4 +43,8 @@ public class Group {
     public BalanceSheet getBalanceSheet(User user){
         return balanceSheetMap.get(user);
     }
+
+    public Map<User, BalanceSheet> getBalanceSheets() {
+        return balanceSheetMap;
+    }
 }

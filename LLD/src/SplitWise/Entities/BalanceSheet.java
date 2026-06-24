@@ -21,6 +21,9 @@ public class BalanceSheet {
         totalExpense += amount;
     }
 
+    public double getBalance(){
+        return amountPaid - totalExpense;
+    }
     public void addBalance(User other, double amount){
         balances.put(other, balances.getOrDefault(other, 0d) + amount);
         if(Math.abs(balances.get(other)) < 1e-6) balances.remove(other);
@@ -56,4 +59,7 @@ public class BalanceSheet {
         System.out.println("---------------------------------");
     }
 
+    public Map<User, Double> getBalances() {
+        return this.balances;
+    }
 }

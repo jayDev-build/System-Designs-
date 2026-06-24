@@ -7,6 +7,7 @@ import SplitWise.Repository.InMemoryRepo;
 import SplitWise.Service.BalanceSheetService;
 import SplitWise.Service.ExpenseService;
 import SplitWise.Service.GroupService;
+import SplitWise.Service.SimplifiedBalanceSheet;
 
 import java.util.List;
 
@@ -20,8 +21,9 @@ public class Main {
         InMemoryRepo inMemoryRepo = new InMemoryRepo();
         BalanceSheetService balanceSheetService = new BalanceSheetService();
         ExpenseService expenseService = new ExpenseService(inMemoryRepo , balanceSheetService);
+        SimplifiedBalanceSheet simplifiedBalanceSheet = new SimplifiedBalanceSheet();
 
-        GroupService groupService = new GroupService(inMemoryRepo, expenseService, balanceSheetService);
+        GroupService groupService = new GroupService(inMemoryRepo, expenseService, balanceSheetService,simplifiedBalanceSheet);
         Group group = groupService.createGroup("group1");
 
         groupService.addMember(group, shubh);
@@ -34,7 +36,12 @@ public class Main {
         groupService.addExpense(group, "Lunch Day-2", 200, jake,
                 List.of(shubh, bob, tom, jake), SplitType.EQUAL, null);
 
-        groupService.printBalaces(group);
+        groupService.printBalances(group);
+        groupService.simplifyBalances(group);
+
+        System.out.println("=============================");
+
+        groupService.printBalances(group);
     }
 
 

@@ -2,11 +2,7 @@ package SplitWise.Service;
 
 import SplitWise.Entities.*;
 import SplitWise.Enums.SplitType;
-import SplitWise.Factory.EqualSplitStrategyFactory;
-import SplitWise.Factory.PercentageSplitStrategyFactory;
-import SplitWise.Factory.SplitStrategyFactory;
 import SplitWise.Repository.InMemoryRepo;
-import SplitWise.Strategy.SplitStrategy;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +13,13 @@ public class GroupService {
     private final InMemoryRepo inMemoryRepo;
     private final ExpenseService expenseService;
     private final BalanceSheetService balanceSheetService;
+    private final SimplifiedBalanceSheet simplifiedBalanceSheet;
 
-    public GroupService(InMemoryRepo inMemoryRepo, ExpenseService expenseService, BalanceSheetService balanceSheetService){
+    public GroupService(InMemoryRepo inMemoryRepo, ExpenseService expenseService, BalanceSheetService balanceSheetService, SimplifiedBalanceSheet simplifiedBalanceSheet){
         this.inMemoryRepo = inMemoryRepo;
         this.expenseService = expenseService;
         this.balanceSheetService = balanceSheetService;
+        this.simplifiedBalanceSheet = simplifiedBalanceSheet;
     }
 
     public Group createGroup(String name){
@@ -45,7 +43,11 @@ public class GroupService {
         expenseService.addExpense(group, description, amount, paidBy, participants, splitType, metaData);
     }
 
-    public void printBalaces(Group group){
+    public void simplifyBalances(Group group){
+        simplifiedBalanceSheet.simplifyBalanceSheet(group);
+    }
+
+    public void printBalances(Group group){
         balanceSheetService.printBalanceSheet(group);
     }
 

@@ -109,7 +109,7 @@ public class Grid {
                     }
                 }
 
-                System.out.printf("%-8s", cellContent);
+                    System.out.printf("%-8s", cellContent);
             }
             System.out.println();
         }

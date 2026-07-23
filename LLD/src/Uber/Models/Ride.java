@@ -30,6 +30,7 @@ public class Ride {
 
     public void endRide() {
         this.rideStatus = Status.COMPLETED;
+        driver.makeAvailable();
     }
 
     @Override

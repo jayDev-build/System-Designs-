@@ -3,15 +3,15 @@ package Uber.Repository;
 import Uber.Models.Driver;
 
 import Uber.Models.Location;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 
 public class DriverRepository {
-    HashMap<String, Driver> driverMap;
+    ConcurrentHashMap<String, Driver> driverMap;
 
     public DriverRepository() {
-        driverMap = new HashMap<>();
+        driverMap = new ConcurrentHashMap<>();
     }
 
     public void saveDriver(Driver driver) {

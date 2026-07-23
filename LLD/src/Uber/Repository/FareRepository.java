@@ -1,7 +1,6 @@
 package Uber.Repository;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ public class FareRepository {
         public FareEntry(String riderId, Fare fare) {
             this.riderId = riderId;
             this.fare = fare;
-        }   
+        }
     }
 
     Map<String, FareEntry> fareMap;
@@ -31,11 +30,11 @@ public class FareRepository {
 
     public Fare findById(String id) {
         FareEntry entry = fareMap.get(id);
-        if(entry == null){
+        if (entry == null) {
             return null;
         }
 
-        if(LocalTime.ofInstant(entry.fare.createdAt, ZoneId.of("Asia/Kolkata")).isBefore(LocalTime.now().minusSeconds(5))){
+        if (entry.fare.createdAt.isBefore(Instant.now().minusSeconds(5L))) {
             delete(id);
             return null;
         }

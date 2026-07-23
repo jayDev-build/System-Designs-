@@ -1,24 +1,24 @@
 package Uber.Models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-import Uber.Models.Products.Product;
+import Uber.Enums.ProductType;
 
 public class Vehicle {
     public String number;
-    public List<Product> supportedProducts;
+    public Set<ProductType> supportedProducts;
 
     public Vehicle(String number) {
         this.number = number;
-        supportedProducts = new ArrayList<>();
+        supportedProducts = new HashSet<>();
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(ProductType product) {
         supportedProducts.add(product);
     }
 
-    public List<Product> getProducts() {
+    public Set<ProductType> getProducts() {
         return supportedProducts;
     }
 }

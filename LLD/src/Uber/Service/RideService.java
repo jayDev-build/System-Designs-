@@ -1,8 +1,6 @@
 package Uber.Service;
 
-import Uber.Models.Location;
 
-import Uber.Models.Products.Product;
 import Uber.Repository.FareRepository;
 import Uber.Repository.RideRepository;
 import Uber.Models.Rider;
@@ -22,14 +20,14 @@ public class RideService {
         this.driverMatchingService = driverMatchingService;
     }
 
-    public Ride requestRide(String fareId, Product product, Location source, Location destinaLocation, Rider rider) {
+    public Ride requestRide(String fareId, Rider rider) {
         Fare fare = fareRepository.findById(fareId);
 
         if (fare == null) {
             throw new RuntimeException("No Fare Available with fareID: " + fareId);
         }
 
-        Driver driver = driverMatchingService.findNearestAvailableDriver(source, product);
+        Driver driver = driverMatchingService.findNearestAvailableDriver(fare.source, fare.product.productType);
 
         if (driver == null) {
             throw new RuntimeException("No Driver Available");
@@ -40,6 +38,10 @@ public class RideService {
 
         rideRepository.save(ride);
         return ride;
+    }
+
+    public void endRide(Ride ride) {
+        ride.endRide();
     }
 
 }
